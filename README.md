@@ -1,72 +1,80 @@
-# Neural Network
+# Neural Network Notes — Clean LaTeX Rendering
 
-This README uses GitHub‑compatible MathJax. Inline math like $a^{(\ell)}$ and display blocks using `$$ ... $$` will render on GitHub.
+This README uses **only** `$...$` for inline math and `$$...$$` for display equations so it renders on GitHub and most Markdown viewers.
 
 ## Notation
 
-- Layer index: $\ell \in \{1,\dots,L\}$.
-- Activations: $a^{(\ell)} \in \mathbb{R}^{N_\ell}$.
-- Pre‑activations (weighted sums): $z^{(\ell)} \in \mathbb{R}^{N_\ell}$.
-- Biases: $b^{(\ell)} \in \mathbb{R}^{N_\ell}$.
-- Weights: $W^{(\ell)} \in \mathbb{R}^{N_\ell \times N_{\ell-1}}$.
-- Activation function (example sigmoid): $\sigma(x) = \frac{1}{1 + e^{-x}}$.
+- Layer index: $\ell \in \{1,\dots,L\}$
+- Activations: $a^{(\ell)} \in \mathbb{R}^{N_{\ell}}$
+- Pre-activations (weighted sums): $z^{(\ell)} \in \mathbb{R}^{N_{\ell}}$
+- Biases: $b^{(\ell)} \in \mathbb{R}^{N_{\ell}}$
+- Weights: $W^{(\ell)} \in \mathbb{R}^{N_{\ell} \times N_{\ell-1}}$
+- Example activation: $\sigma(x) = \frac{1}{1 + e^{-x}}$
 
 ## Forward Propagation
 
-For layer $\ell = 1, \dots, L$:
+For layer $\ell = 1,\dots,L$:
+
 $$
-z^{(\ell)} \;=\; b^{(\ell)} \;+\; W^{(\ell)}\, a^{(\ell-1)},
+z^{(\ell)} = b^{(\ell)} + W^{(\ell)}\,a^{(\ell-1)},
 \qquad
-a^{(\ell)} \;=\; \sigma\!\big(z^{(\ell)}\big).
+a^{(\ell)} = \sigma\!\big(z^{(\ell)}\big).
 $$
 
-Component‑wise for neuron $n$ in layer $\ell$:
+Component-wise for neuron $n$ in layer $\ell$:
+
 $$
-z^{(\ell)}_{n} \;=\; b^{(\ell)}_{n} \;+\; \sum_{k=1}^{N_{\ell-1}} W^{(\ell)}_{nk}\, a^{(\ell-1)}_{k}.
+z^{(\ell)}_{n} = b^{(\ell)}_{n} + \sum_{k=1}^{N_{\ell-1}} W^{(\ell)}_{nk}\,a^{(\ell-1)}_{k}.
 $$
 
-## Loss (Squared Error Example)
+## Loss (Squared Error)
 
-For a single example with target $y \in \mathbb{R}^{N_L}$:
+For one example with target $y \in \mathbb{R}^{N_{L}}$:
+
 $$
-C \;=\; \sum_{n=1}^{N_L} \big(a^{(L)}_{n} - y_n\big)^2 \;=\; \| a^{(L)} - y \|_2^2.
+C = \sum_{n=1}^{N_{L}} \big(a^{(L)}_{n} - y_{n}\big)^{2} = \lVert a^{(L)} - y \rVert_{2}^{2}.
 $$
 
-## Gradient Descent Update
+## Gradient Descent Updates
 
 Let $\alpha$ be the learning rate. One step of gradient descent:
+
 $$
-W^{(\ell)} \leftarrow W^{(\ell)} \;-\; \alpha \,\frac{\partial C}{\partial W^{(\ell)}},
+W^{(\ell)} \leftarrow W^{(\ell)} - \alpha \,\frac{\partial C}{\partial W^{(\ell)}}, 
 \qquad
-b^{(\ell)} \leftarrow b^{(\ell)} \;-\; \alpha \,\frac{\partial C}{\partial b^{(\ell)}}.
+b^{(\ell)} \leftarrow b^{(\ell)} - \alpha \,\frac{\partial C}{\partial b^{(\ell)}}.
 $$
 
-(Backprop gives the exact partial derivatives; notation here is kept conventional with $W$, *not* $\Omega$.)
+> Note: Using $W$ (not $\Omega$) and superscripted layer indices is the standard convention.
 
-## Sigmoid and Its Derivative (Example)
+## Sigmoid (Example) and Derivative
 
 $$
-\sigma(x) \;=\; \frac{1}{1 + e^{-x}}, 
-\qquad
-\sigma'(x) \;=\; \sigma(x)\,\big(1 - \sigma(x)\big).
+\sigma(x) = \frac{1}{1 + e^{-x}}, 
+\qquad 
+\sigma'(x) = \sigma(x)\,\big(1 - \sigma(x)\big).
 $$
 
-## (Optional) Low‑Rank Compression via SVD
+## Optional: Low-Rank Compression via SVD
 
-Given $W^{(\ell)} \in \mathbb{R}^{m\times n}$ with SVD $W^{(\ell)} = U\Sigma V^{\!\top}$, a rank‑$k$ approximation is
+Given $W^{(\ell)} \in \mathbb{R}^{m \times n}$ with SVD $W^{(\ell)} = U \Sigma V^{\top}$, a rank-$k$ approximation is:
+
 $$
-W^{(\ell)} \approx U_{[:,1:k]}\,\Sigma_{1:k,1:k}\,V_{[:,1:k]}^{\!\top}.
+W^{(\ell)} \approx U_{[:,1\!:\!k]}\,\Sigma_{1\!:\!k,\,1\!:\!k}\,V_{[:,1\!:\!k]}^{\top}.
 $$
 
-Multiplying $a$ by the compressed factorization can reduce cost:
+Multiplying by the factorization reduces cost when $k \ll \min\{m,n\}$:
+
 $$
-a\,V^{\!\top}\Sigma U^{\!\top}:\; O(nk + k^2 + mk)\quad \text{when } k \ll \min\{m,n\}.
+a\,V^{\top}\Sigma\,U^{\top} :\; \mathcal{O}(nk + k^{2} + mk).
 $$
 
 ---
 
-### Tips
+### Rendering Checklist (if you still see raw LaTeX)
+- Ensure you are viewing this on GitHub (which supports math) or in a Markdown viewer with math enabled.
+- Do **not** wrap math inside backticks. Code spans like `` `\frac{1}{2}` `` will not render as math.
+- Keep inline math on one line (no newlines inside `$...$`).
+- Use ASCII characters only in math (e.g., `\Sigma` not `Σ`, `\ell` not `ℓ`).
+- Leave a blank line before and after each `$$` display block.
 
-- Use inline math `$...$` for short expressions and `$$...$$` for display equations.
-- Avoid HTML like `<sub>...</sub>`; prefer LaTeX: `a_{k}`, `W^{(\ell)}`.
-- If pasting equations into Jupyter Markdown, `$$...$$` also renders nicely.
