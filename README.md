@@ -1,4 +1,4 @@
-# Neural Network Notebook — What It Does & How to Use It (No Math)
+# Neural Network Notebook
 
 This project is a **from-scratch feed‑forward neural network** implemented and demonstrated in a Jupyter notebook. It shows how to:
 - Build a network with one or more hidden layers
